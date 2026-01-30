@@ -4,6 +4,7 @@ import ParticleField from "@/components/ParticleField";
 
 const features = [
   {
+    id: 1,
     title: "Receipt AI",
     description: "Snap a photo. Our AI extracts every deduction. No more manual data entry – just upload and done.",
     icon: "📸",
@@ -11,6 +12,7 @@ const features = [
     statLabel: "Processing time",
   },
   {
+    id: 2,
     title: "Smart Deductions",
     description: "We know Dutch tax law inside out. Every freelance expense you can claim, automatically identified.",
     icon: "🔍",
@@ -18,6 +20,7 @@ const features = [
     statLabel: "Avg. yearly savings",
   },
   {
+    id: 3,
     title: "WBSO Wizard",
     description: "Dutch R&D tax credit made simple. We check your eligibility and guide you through the application.",
     icon: "🚀",
@@ -25,6 +28,7 @@ const features = [
     statLabel: "Max. WBSO benefit",
   },
   {
+    id: 4,
     title: "Tax Projection",
     description: "See your future. Calculate exactly what you'll owe – and what you'll save – before tax season arrives.",
     icon: "📊",
