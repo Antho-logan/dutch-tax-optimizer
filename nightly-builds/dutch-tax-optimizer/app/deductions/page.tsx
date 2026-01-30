@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card";
-import { Input } from "@/components/Input";
-import { Badge } from "@/components/Badge";
+import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
 const deductions = [
@@ -30,75 +28,103 @@ export default function DeductionsPage() {
   const categories = ["all", ...new Set(deductions.map(d => d.category.toLowerCase()))];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/20 to-indigo-50/20">
-      <header className="border-b border-[rgb(var(--color-line))]/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-6">
-          <Link href="/" className="text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))]">← Back</Link>
-          <h1 className="text-5xl font-bold mt-4 text-gradient">Deductions Finder</h1>
-          <p className="mt-2 text-[rgb(var(--color-text-muted))] text-lg">Discover all eligible Dutch tax deductions</p>
+    <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/10 to-indigo-50/10">
+      <ScrollEffects />
+
+      {/* Header */}
+      <header className="border-b border-[rgb(var(--color-line))]/50 bg-white/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/dashboard" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
+              ← Back to Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
+              Deductions Finder
+            </h1>
+            <div className="w-20" />
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-12 max-w-6xl">
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Search Deductions</CardTitle>
-            <CardDescription>Find deductions relevant to your business</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Input
-              placeholder="Search deductions..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="mb-4"
-            />
-            <div className="flex flex-wrap gap-2">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setCategory(cat)}
-                  className={`
-                    px-4 py-2 rounded-full text-sm font-semibold transition-all
-                    ${category === cat
-                      ? "bg-[rgb(var(--color-primary))] text-white"
-                      : "bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text-muted))] hover:bg-[rgb(var(--color-primary))]/10"}
-                  `}
-                >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="container mx-auto px-6 py-12 max-w-6xl">
+        {/* Search Card */}
+        <div className="glass-panel mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="eyebrow">Smart Search</span>
+            <span className="text-sm text-[rgb(var(--color-text-muted))]">89 deductions found</span>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">Find Your Deductions</h2>
+          <p className="text-[rgb(var(--color-text-muted))] mb-6">
+            Search for deductions relevant to your business. We know Dutch tax law inside out.
+          </p>
 
-        <div className="mb-4">
-          <p className="text-[rgb(var(--color-text-muted))]">Found {filtered.length} deduction{filtered.length !== 1 ? "s" : ""}</p>
+          <input
+            type="text"
+            placeholder="Search deductions... (e.g., home office, equipment, travel)"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="input-field mb-6"
+          />
+
+          <div className="flex flex-wrap gap-2">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`
+                  px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300
+                  ${category === cat
+                    ? "bg-[rgb(var(--color-primary))] text-white shadow-lg"
+                    : "bg-[rgb(var(--bg-soft))] text-[rgb(var(--color-text-muted))] hover:bg-[rgb(var(--color-primary))]/10"}
+                `}
+              >
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Results Count */}
+        <div className="mb-6 reveal" data-reveal>
+          <p className="text-[rgb(var(--color-text-muted))]">
+            Found <span className="font-bold text-[rgb(var(--color-primary))]">{filtered.length}</span> deduction{filtered.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+
+        {/* Deduction Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filtered.map(d => (
-            <Card key={d.id} hover>
-              <CardHeader>
-                <div className="flex items-start justify-between mb-2">
-                  <CardTitle className="text-xl">{d.title}</CardTitle>
-                  {d.popular && <Badge>Popular</Badge>}
+          {filtered.map((d, index) => (
+            <div
+              key={d.id}
+              className="feature-card reveal"
+              data-reveal
+              data-delay={`${index * 0.05}s`}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  {d.popular && <span className="eyebrow block mb-2">Popular</span>}
+                  <h3 className="text-xl font-bold">{d.title}</h3>
+                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-[rgb(var(--color-primary))]/10 text-[rgb(var(--color-primary))] mt-2">
+                    {d.category}
+                  </span>
                 </div>
-                <Badge variant="outline" className="w-fit mb-3">{d.category}</Badge>
-                <CardDescription className="text-base">{d.desc}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-[rgb(var(--color-text-muted))]">Deduction Amount</p>
-                    <p className="text-2xl font-bold text-[rgb(var(--color-accent))]">{d.amount}</p>
-                  </div>
-                  <Badge variant="success">Eligible</Badge>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-[rgb(var(--color-accent))]">{d.amount}</div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <p className="text-[rgb(var(--color-text-muted))] leading-relaxed mb-4">{d.desc}</p>
+              <div className="flex items-center justify-between pt-4 border-t border-[rgb(var(--color-line))]">
+                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[rgb(var(--color-accent))]/10 text-[rgb(var(--color-accent))]">
+                  Eligible
+                </span>
+                <button className="text-sm font-semibold text-[rgb(var(--color-primary))] hover:underline">
+                  Learn more →
+                </button>
+              </div>
+            </div>
           ))}
         </div>
-      </main>
+      </div>
     </main>
   );
 }

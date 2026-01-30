@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card";
-import { Input } from "@/components/Input";
-import { Button } from "@/components/Button";
-import { Badge } from "@/components/Badge";
+import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
 export default function ProjectionsPage() {
@@ -41,51 +38,121 @@ export default function ProjectionsPage() {
   const format = (amount: number) => new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(amount);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50/20 to-orange-50/20">
-      <header className="border-b border-[rgb(var(--color-line))]/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-6">
-          <Link href="/" className="text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))]">← Back</Link>
-          <h1 className="text-5xl font-bold mt-4 text-gradient">Tax Projections</h1>
-          <p className="mt-2 text-[rgb(var(--color-text-muted))] text-lg">Calculate your potential tax savings and plan ahead</p>
+    <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-amber-50/10 to-orange-50/10">
+      <ScrollEffects />
+
+      {/* Header */}
+      <header className="border-b border-[rgb(var(--color-line))]/50 bg-white/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/dashboard" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
+              ← Back to Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
+              Tax Projections
+            </h1>
+            <div className="w-20" />
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-12 max-w-6xl">
+      <div className="container mx-auto px-6 py-12 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Income & Deductions</CardTitle>
-              <CardDescription>Enter your financial information for 2026</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input label="Expected Annual Income (€)" type="number" placeholder="e.g., 80000" value={formData.income} onChange={e => setFormData({ ...formData, income: e.target.value })} />
-              <Input label="Expected Deductions (€)" type="number" placeholder="e.g., 15000" value={formData.deductions} onChange={e => setFormData({ ...formData, deductions: e.target.value })} />
-              <Input label="Expected WBSO Benefit (€)" type="number" placeholder="e.g., 8000" value={formData.wbso} onChange={e => setFormData({ ...formData, wbso: e.target.value })} />
-              <Input label="Other Tax Credits (€)" type="number" placeholder="e.g., 2000" value={formData.credits} onChange={e => setFormData({ ...formData, credits: e.target.value })} />
-              <Button onClick={calculate} className="w-full" size="lg">Calculate Projection</Button>
-            </CardContent>
-          </Card>
+          {/* Input Form */}
+          <div className="glass-panel reveal" data-reveal>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="eyebrow">2026 Forecast</span>
+              <span className="text-sm text-[rgb(var(--color-text-muted))]">98% accuracy</span>
+            </div>
+            <h2 className="text-3xl font-bold mb-2">Calculate Your Savings</h2>
+            <p className="text-[rgb(var(--color-text-muted))] mb-6">
+              Enter your financial information for 2026. We'll calculate exactly what you'll owe – and what you'll save.
+            </p>
 
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
+                  Expected Annual Income (€)
+                </label>
+                <input
+                  type="number"
+                  placeholder="e.g., 80000"
+                  value={formData.income}
+                  onChange={(e) => setFormData({ ...formData, income: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
+                  Expected Deductions (€)
+                </label>
+                <input
+                  type="number"
+                  placeholder="e.g., 15000"
+                  value={formData.deductions}
+                  onChange={(e) => setFormData({ ...formData, deductions: e.target.value })}
+                  className="input-field"
+                />
+                <p className="text-xs text-[rgb(var(--color-text-muted))] mt-1">Equipment, home office, travel, etc.</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
+                  Expected WBSO Benefit (€)
+                </label>
+                <input
+                  type="number"
+                  placeholder="e.g., 8000"
+                  value={formData.wbso}
+                  onChange={(e) => setFormData({ ...formData, wbso: e.target.value })}
+                  className="input-field"
+                />
+                <p className="text-xs text-[rgb(var(--color-text-muted))] mt-1">R&D tax credit (use checker above)</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
+                  Other Tax Credits (€)
+                </label>
+                <input
+                  type="number"
+                  placeholder="e.g., 2000"
+                  value={formData.credits}
+                  onChange={(e) => setFormData({ ...formData, credits: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+
+              <button onClick={calculate} className="btn-primary w-full">
+                Calculate Projection
+              </button>
+            </div>
+          </div>
+
+          {/* Results */}
           {projection && (
             <div className="space-y-6">
-              <Card className="border-2 border-[rgb(var(--color-accent))]">
-                <CardHeader>
-                  <CardTitle>Tax Summary</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center pb-3 border-b">
+              <div className="card reveal" data-reveal style={{ borderColor: "rgba(16, 185, 129, 0.3)" }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="eyebrow">Tax Summary</span>
+                </div>
+                <h2 className="text-2xl font-bold mb-6">Your 2026 Projection</h2>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center pb-3 border-b border-[rgb(var(--color-line))]">
                     <span className="text-[rgb(var(--color-text-muted))]">Gross Income</span>
                     <span className="text-xl font-bold">{format(projection.grossIncome)}</span>
                   </div>
-                  <div className="flex justify-between items-center pb-3 border-b">
+                  <div className="flex justify-between items-center pb-3 border-b border-[rgb(var(--color-line))]">
                     <span className="text-[rgb(var(--color-text-muted))]">Total Deductions</span>
                     <span className="text-xl font-bold text-red-500">-{format(projection.totalDeductions)}</span>
                   </div>
-                  <div className="flex justify-between items-center pb-3 border-b">
+                  <div className="flex justify-between items-center pb-3 border-b border-[rgb(var(--color-line))]">
                     <span className="text-[rgb(var(--color-text-muted))]">Taxable Income</span>
                     <span className="text-xl font-bold">{format(projection.taxableIncome)}</span>
                   </div>
-                  <div className="flex justify-between items-center pb-3 border-b">
+                  <div className="flex justify-between items-center pb-3 border-b border-[rgb(var(--color-line))]">
                     <span className="text-[rgb(var(--color-text-muted))]">Income Tax</span>
                     <span className="text-xl font-bold text-red-500">{format(projection.incomeTax)}</span>
                   </div>
@@ -93,32 +160,57 @@ export default function ProjectionsPage() {
                     <span className="text-lg font-bold">Net Income</span>
                     <span className="text-3xl font-bold text-[rgb(var(--color-accent))]">{format(projection.netIncome)}</span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Effective Tax Rate</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center">
-                    <div className="text-center">
-                      <p className="text-6xl font-bold text-[rgb(var(--color-primary))]">{projection.effectiveTaxRate.toFixed(1)}%</p>
-                      <p className="text-sm text-[rgb(var(--color-text-muted))] mt-2">After all deductions and credits</p>
+              <div className="glass-panel reveal" data-reveal data-delay="0.1s">
+                <h3 className="text-xl font-bold mb-6">Effective Tax Rate</h3>
+                <div className="flex items-center justify-center mb-6">
+                  <div className="text-center">
+                    <div className="text-6xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
+                      {projection.effectiveTaxRate.toFixed(1)}%
                     </div>
+                    <p className="text-sm text-[rgb(var(--color-text-muted))] mt-2">
+                      After all deductions and credits
+                    </p>
                   </div>
-                  <div className="mt-6 p-4 bg-gradient-to-r from-[rgb(var(--color-accent))]/10 to-[rgb(var(--color-accent))]/5 rounded-xl border border-[rgb(var(--color-accent))]/30">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[rgb(var(--color-text-muted))]">You saved</span>
-                      <span className="text-2xl font-bold text-[rgb(var(--color-accent))]">{format(projection.totalSavings)}</span>
-                    </div>
+                </div>
+
+                <div className="p-6 bg-gradient-to-r from-[rgb(var(--color-accent))]/10 to-[rgb(var(--color-accent))]/5 rounded-xl border border-[rgb(var(--color-accent))]/30">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[rgb(var(--color-text-muted))]">You're saving</span>
+                    <span className="text-3xl font-bold text-[rgb(var(--color-accent))]">
+                      {format(projection.totalSavings)}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
+
+              <div className="card reveal" data-reveal data-delay="0.2s">
+                <h3 className="text-xl font-bold mb-4">Savings Breakdown</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[rgb(var(--color-text-muted))]">Deduction savings (36.97%)</span>
+                    <span className="font-bold">{format(projection.totalDeductions * 0.3697)}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[rgb(var(--color-text-muted))]">WBSO benefit</span>
+                    <span className="font-bold">{format(projection.wbsoBenefit)}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[rgb(var(--color-text-muted))]">Other credits</span>
+                    <span className="font-bold">{format(projection.otherCredits)}</span>
+                  </div>
+                  <div className="pt-3 border-t border-[rgb(var(--color-line))] flex justify-between items-center">
+                    <span className="font-bold">Total savings</span>
+                    <span className="text-xl font-bold text-[rgb(var(--color-accent))]">{format(projection.totalSavings)}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
-      </main>
+      </div>
     </main>
   );
 }

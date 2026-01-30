@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card";
-import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
-import { Badge } from "@/components/Badge";
+import ParticleField from "@/components/ParticleField";
+import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
 export default function ScanReceiptsPage() {
@@ -27,7 +25,6 @@ export default function ScanReceiptsPage() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
     const droppedFiles = Array.from(e.dataTransfer.files).filter(
       file => file.type.startsWith("image/")
     );
@@ -55,117 +52,128 @@ export default function ScanReceiptsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50/20 to-purple-50/20 dark:from-slate-950 dark:via-orange-950/10 dark:to-purple-950/10">
-      <header className="border-b border-[rgb(var(--color-line))]/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-6">
-          <Link href="/" className="text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
-            ← Back to Home
-          </Link>
-          <h1 className="text-5xl font-bold mt-4 text-gradient">Receipt Scanner</h1>
-          <p className="mt-2 text-[rgb(var(--color-text-muted))] text-lg">
-            Upload receipts and let AI extract expense data
-          </p>
+    <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-orange-50/10 to-purple-50/10">
+      <ScrollEffects />
+
+      {/* Header */}
+      <header className="border-b border-[rgb(var(--color-line))]/50 bg-white/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/dashboard" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
+              ← Back to Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
+              Receipt Scanner
+            </h1>
+            <div className="w-20" /> {/* Spacer for balance */}
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-12 max-w-4xl">
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Upload Receipts</CardTitle>
-            <CardDescription>Drag and drop receipt images or click to browse</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-              className={`
-                border-2 border-dashed rounded-2xl p-16 text-center transition-all
-                ${dragActive
-                  ? "border-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/5"
-                  : "border-[rgb(var(--color-line))] hover:border-[rgb(var(--color-primary))]/50"
-                }
-              `}
-            >
-              <div className="text-6xl mb-6">📄</div>
-              <p className="text-xl font-semibold mb-2">Drop your receipts here</p>
-              <p className="text-[rgb(var(--color-text-muted))] mb-6">Supports JPG, PNG, WEBP</p>
-              <label className="cursor-pointer">
-                <Input type="file" accept="image/*" multiple className="hidden" onChange={handleFileInput} />
-                <Button variant="outline" type="button">Browse Files</Button>
-              </label>
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
+        {/* Upload Card */}
+        <div className="glass-panel mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="eyebrow">AI-Powered</span>
+            <span className="text-sm text-[rgb(var(--color-text-muted))]">2s processing time</span>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">Upload Receipts</h2>
+          <p className="text-[rgb(var(--color-text-muted))] mb-6">
+            Drag and drop receipt images or click to browse. Our AI extracts vendor, amount, category, and date.
+          </p>
+
+          <div
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+            className={`
+              border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-300
+              ${dragActive
+                ? "border-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/5"
+                : "border-[rgb(var(--color-line))] hover:border-[rgb(var(--color-primary))]/50"}
+            `}
+          >
+            <div className="text-6xl mb-6">📸</div>
+            <p className="text-xl font-semibold mb-2">Drop your receipts here</p>
+            <p className="text-[rgb(var(--color-text-muted))] mb-6">JPG, PNG, WEBP supported</p>
+            <label className="cursor-pointer">
+              <input type="file" accept="image/*" multiple className="hidden" onChange={handleFileInput} />
+              <button className="btn-ghost">Browse Files</button>
+            </label>
+          </div>
+
+          {files.length > 0 && (
+            <div className="mt-6 space-y-3 reveal" data-reveal>
+              <h3 className="font-bold">Uploaded Files ({files.length})</h3>
+              {files.map((file, i) => (
+                <div key={i} className="flex items-center justify-between p-4 bg-[rgb(var(--bg-soft))] rounded-xl">
+                  <span className="font-medium">{file.name}</span>
+                  <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[rgb(var(--color-accent))]/10 text-[rgb(var(--color-accent))]">
+                    {(file.size / 1024).toFixed(1)} KB
+                  </span>
+                </div>
+              ))}
+              <button
+                onClick={processReceipts}
+                disabled={isProcessing}
+                className="btn-primary w-full mt-4"
+              >
+                {isProcessing ? "Processing..." : "Extract Data with AI"}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Results Card */}
+        {extractedData && (
+          <div className="card reveal" data-reveal style={{ borderColor: "rgba(16, 185, 129, 0.3)" }}>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-2xl font-bold">Extracted Data</h3>
+                <p className="text-[rgb(var(--color-text-muted))]">AI-powered receipt analysis</p>
+              </div>
+              <span className="text-xs font-semibold px-4 py-2 rounded-full bg-[rgb(var(--color-accent))]/10 text-[rgb(var(--color-accent))]">
+                {extractedData.confidence}% Confidence
+              </span>
             </div>
 
-            {files.length > 0 && (
-              <div className="mt-6 space-y-3">
-                <h3 className="font-semibold">Uploaded Files ({files.length})</h3>
-                {files.map((file, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 bg-[rgb(var(--color-bg))] rounded-lg">
-                    <span className="font-medium">{file.name}</span>
-                    <Badge variant="outline">{(file.size / 1024).toFixed(1)} KB</Badge>
-                  </div>
-                ))}
-                <Button
-                  onClick={processReceipts}
-                  disabled={isProcessing}
-                  className="w-full mt-4"
-                  size="lg"
-                >
-                  {isProcessing ? "Processing..." : "Extract Data with AI"}
-                </Button>
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div>
+                <p className="text-sm text-[rgb(var(--color-text-muted))]">Date</p>
+                <p className="text-xl font-bold">{extractedData.date}</p>
               </div>
-            )}
-          </CardContent>
-        </Card>
+              <div>
+                <p className="text-sm text-[rgb(var(--color-text-muted))]">Amount</p>
+                <p className="text-3xl font-bold text-[rgb(var(--color-accent))]">{extractedData.amount}</p>
+              </div>
+              <div>
+                <p className="text-sm text-[rgb(var(--color-text-muted))]">Category</p>
+                <p className="text-xl font-bold">{extractedData.category}</p>
+              </div>
+              <div>
+                <p className="text-sm text-[rgb(var(--color-text-muted))]">Vendor</p>
+                <p className="text-xl font-bold">{extractedData.vendor}</p>
+              </div>
+            </div>
 
-        {extractedData && (
-          <Card className="border-2 border-[rgb(var(--color-accent))]">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Extracted Data</CardTitle>
-                  <CardDescription>AI-powered receipt analysis</CardDescription>
-                </div>
-                <Badge variant="success">{extractedData.confidence}% Confidence</Badge>
+            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-[rgb(var(--color-accent))]/10 to-[rgb(var(--color-accent))]/5 rounded-xl border border-[rgb(var(--color-accent))]/30 mb-6">
+              <div>
+                <p className="font-bold text-[rgb(var(--color-accent))]">Tax Deductible</p>
+                <p className="text-sm text-[rgb(var(--color-text-muted))]">This expense qualifies as a business deduction</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                <div>
-                  <p className="text-sm text-[rgb(var(--color-text-muted))]">Date</p>
-                  <p className="text-xl font-bold">{extractedData.date}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-[rgb(var(--color-text-muted))]">Amount</p>
-                  <p className="text-3xl font-bold text-[rgb(var(--color-accent))]">{extractedData.amount}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-[rgb(var(--color-text-muted))]">Category</p>
-                  <p className="text-xl font-bold">{extractedData.category}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-[rgb(var(--color-text-muted))]">Vendor</p>
-                  <p className="text-xl font-bold">{extractedData.vendor}</p>
-                </div>
-              </div>
+              <span className="text-xs font-semibold px-4 py-2 rounded-full bg-[rgb(var(--color-accent))] text-white">
+                Eligible
+              </span>
+            </div>
 
-              <div className="flex items-center justify-between p-6 bg-gradient-to-r from-[rgb(var(--color-accent))]/10 to-[rgb(var(--color-accent))]/5 rounded-xl border border-[rgb(var(--color-accent))]/30">
-                <div>
-                  <p className="font-bold text-[rgb(var(--color-accent))]">Tax Deductible</p>
-                  <p className="text-sm text-[rgb(var(--color-text-muted))]">This expense qualifies as a business deduction</p>
-                </div>
-                <Badge variant="success">Eligible</Badge>
-              </div>
-
-              <div className="flex gap-3 mt-6">
-                <Button className="flex-1">Save to Expenses</Button>
-                <Button variant="outline">Edit Data</Button>
-              </div>
-            </CardContent>
-          </Card>
+            <div className="flex gap-3">
+              <button className="btn-primary flex-1">Save to Expenses</button>
+              <button className="btn-ghost">Edit Data</button>
+            </div>
+          </div>
         )}
-      </main>
+      </div>
     </main>
   );
 }
