@@ -1,91 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import ParticleField from "@/components/ParticleField";
 import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
 export default function DashboardPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // No login - show dashboard directly!
 
-  if (!isLoggedIn) {
-    return (
-      <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <ScrollEffects />
-
-        {/* Animated Background */}
-        <div className="hero-gradient parallax-layer" data-parallax data-speed="0.12" />
-        <div className="hero-rings parallax-layer" data-parallax data-speed="0.18" />
-        <div className="absolute inset-0">
-          <ParticleField count={25} />
-        </div>
-
-        {/* Login Card */}
-        <div className="relative z-10 container mx-auto px-6">
-          <div className="max-w-md mx-auto">
-            <div className="glass-panel reveal" data-reveal>
-              <div className="text-center mb-8">
-                <Link href="/" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
-                  ← Back to home
-                </Link>
-                <h1 className="text-4xl font-bold mt-6 bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
-                  Welcome Back
-                </h1>
-                <p className="text-[rgb(var(--color-text-muted))] mt-2">
-                  Sign in to access your tax dashboard
-                </p>
-              </div>
-
-              <form onSubmit={(e) => { e.preventDefault(); setIsLoggedIn(true); }} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="input-field"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="input-field"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-
-                <button type="submit" className="btn-primary w-full mt-6">
-                  Sign In
-                </button>
-
-                <div className="text-center mt-6 text-sm text-[rgb(var(--color-text-muted))]">
-                  Don't have an account?{" "}
-                  <a href="#" className="text-[rgb(var(--color-primary))] font-semibold hover:underline">
-                    Sign up free
-                  </a>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  // Dashboard Content
   return (
     <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-orange-50/10 to-purple-50/10">
       <ScrollEffects />
@@ -95,6 +16,9 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              <Link href="/" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
+                ← Back to Home
+              </Link>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
                 Dutch Tax Optimizer
               </h1>
@@ -102,12 +26,12 @@ export default function DashboardPage() {
                 Dashboard
               </span>
             </div>
-            <button
-              onClick={() => setIsLoggedIn(false)}
+            <Link
+              href="/"
               className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
             >
               Sign Out
-            </button>
+            </Link>
           </div>
         </div>
       </header>
