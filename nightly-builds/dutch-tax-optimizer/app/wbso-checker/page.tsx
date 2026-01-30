@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
+import ParticleField from "@/components/ParticleField";
+import ScrollEffects from "@/components/ScrollEffects";
 
 const questions = [
   { id: "innovative", text: "Developing new products, services, or processes?", desc: "WBSO supports technical R&D with innovative character" },
@@ -31,15 +32,32 @@ export default function WbsoCheckerPage() {
   const result = showResult ? calculateEligibility() : null;
 
   return (
-    <main className="relative min-h-screen">
-      <PageHeader title="WBSO Checker" subtitle="R&D Tax Credit" />
+    <>
+      <ScrollEffects />
 
-      <div className="relative z-10 container mx-auto px-6 py-12 max-w-3xl">
+      {/* Animated Backgrounds */}
+      <div className="hero-gradient parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.12" />
+      <div className="hero-rings parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.18" />
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <ParticleField count={25} />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 p-6 ml-0 lg:ml-72 transition-all duration-300 max-w-3xl">
+        {/* Page Header */}
+        <div className="mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="eyebrow">WBSO Checker</span>
+            <span className="text-sm text-[rgb(var(--color-text-muted))]">Up to €18,828 benefit</span>
+          </div>
+          <h1 className="text-4xl font-bold mb-2">Check Your Eligibility</h1>
+          <p className="text-lg text-[rgb(var(--color-text-muted))]">
+            Answer these questions to check if your R&D work qualifies for WBSO benefits.
+          </p>
+        </div>
+
         <div className="glass-panel mb-8 reveal" data-reveal>
           <h2 className="text-2xl font-bold mb-6">Eligibility Questionnaire</h2>
-          <p className="text-[rgb(var(--color-text-muted))] mb-8">
-            Answer these questions to check if your R&D work qualifies for WBSO benefits (up to €18,828).
-          </p>
 
           <div className="space-y-4">
             {questions.map((q, i) => (
@@ -145,6 +163,6 @@ export default function WbsoCheckerPage() {
           </div>
         )}
       </div>
-    </main>
+    </>
   );
 }

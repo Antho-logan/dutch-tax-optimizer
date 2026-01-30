@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import PageHeader from "@/components/PageHeader";
+import ParticleField from "@/components/ParticleField";
+import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
 export default function ScanReceiptsPage() {
@@ -51,19 +52,35 @@ export default function ScanReceiptsPage() {
   };
 
   return (
-    <main className="relative min-h-screen">
-      <PageHeader title="Receipt Scanner" subtitle="AI-Powered" />
+    <>
+      <ScrollEffects />
 
-      <div className="relative z-10 container mx-auto px-6 py-12 max-w-4xl">
-        {/* Upload Card */}
-        <div className="glass-panel mb-8 reveal" data-reveal>
-          <div className="flex items-center gap-3 mb-6">
+      {/* Animated Backgrounds */}
+      <div className="hero-gradient parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.12" />
+      <div className="hero-rings parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.18" />
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <ParticleField count={25} />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 p-6 ml-0 lg:ml-72 transition-all duration-300 max-w-5xl">
+        {/* Page Header */}
+        <div className="mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-2">
             <span className="eyebrow">AI-Powered</span>
             <span className="text-sm text-[rgb(var(--color-text-muted))]">2s processing time</span>
           </div>
-          <h2 className="text-3xl font-bold mb-2">Upload Receipts</h2>
+          <h1 className="text-4xl font-bold mb-2">Receipt Scanner</h1>
+          <p className="text-lg text-[rgb(var(--color-text-muted))]">
+            Upload receipts and let AI extract vendor, amount, category, and date automatically.
+          </p>
+        </div>
+
+        {/* Upload Card */}
+        <div className="glass-panel mb-8 reveal" data-reveal>
+          <h2 className="text-2xl font-bold mb-6">Upload Receipts</h2>
           <p className="text-[rgb(var(--color-text-muted))] mb-6">
-            Drag and drop receipt images or click to browse. Our AI extracts vendor, amount, category, and date.
+            Drag and drop receipt images or click to browse. Our AI extracts everything in seconds.
           </p>
 
           <div
@@ -158,6 +175,6 @@ export default function ScanReceiptsPage() {
           </div>
         )}
       </div>
-    </main>
+    </>
   );
 }

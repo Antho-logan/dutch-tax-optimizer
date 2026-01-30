@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
+import ParticleField from "@/components/ParticleField";
+import ScrollEffects from "@/components/ScrollEffects";
 
 const deductions = [
   { id: 1, title: "Home Office Deduction", category: "Workspace", amount: "€0.19/kWh", desc: "Deduct energy costs for your home workspace", popular: true },
@@ -27,20 +28,32 @@ export default function DeductionsPage() {
   const categories = ["all", ...new Set(deductions.map(d => d.category.toLowerCase()))];
 
   return (
-    <main className="relative min-h-screen">
-      <PageHeader title="Deductions Finder" subtitle="89 Deductions" />
+    <>
+      <ScrollEffects />
 
-      <div className="relative z-10 container mx-auto px-6 py-12 max-w-6xl">
-        {/* Search Card */}
-        <div className="glass-panel mb-8 reveal" data-reveal>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="eyebrow">Smart Search</span>
+      {/* Animated Backgrounds */}
+      <div className="hero-gradient parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.12" />
+      <div className="hero-rings parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.18" />
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <ParticleField count={25} />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 p-6 ml-0 lg:ml-72 transition-all duration-300 max-w-6xl">
+        {/* Page Header */}
+        <div className="mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="eyebrow">Deduction Finder</span>
+            <span className="text-sm text-[rgb(var(--color-text-muted))]">89 deductions available</span>
           </div>
-          <h2 className="text-3xl font-bold mb-2">Find Your Deductions</h2>
-          <p className="text-[rgb(var(--color-text-muted))] mb-6">
+          <h1 className="text-4xl font-bold mb-2">Find Your Deductions</h1>
+          <p className="text-lg text-[rgb(var(--color-text-muted))]">
             Search for deductions relevant to your business. We know Dutch tax law inside out.
           </p>
+        </div>
 
+        {/* Search Card */}
+        <div className="glass-panel mb-8 reveal" data-reveal>
           <input
             type="text"
             placeholder="Search deductions... (e.g., home office, equipment, travel)"
@@ -108,6 +121,6 @@ export default function DeductionsPage() {
           ))}
         </div>
       </div>
-    </main>
+    </>
   );
 }

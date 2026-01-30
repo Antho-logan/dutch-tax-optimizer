@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
+import ParticleField from "@/components/ParticleField";
+import ScrollEffects from "@/components/ScrollEffects";
 
 export default function ProjectionsPage() {
   const [formData, setFormData] = useState({ income: "", deductions: "", wbso: "", credits: "" });
@@ -37,22 +38,33 @@ export default function ProjectionsPage() {
   const format = (amount: number) => new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(amount);
 
   return (
-    <main className="relative min-h-screen">
-      <PageHeader title="Tax Projections" subtitle="2026 Forecast" />
+    <>
+      <ScrollEffects />
 
-      <div className="relative z-10 container mx-auto px-6 py-12 max-w-6xl">
+      {/* Animated Backgrounds */}
+      <div className="hero-gradient parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.12" />
+      <div className="hero-rings parallax-layer fixed inset-0 -z-10" data-parallax data-speed="0.18" />
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <ParticleField count={25} />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 p-6 ml-0 lg:ml-72 transition-all duration-300 max-w-6xl">
+        {/* Page Header */}
+        <div className="mb-8 reveal" data-reveal>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="eyebrow">Tax Projections</span>
+            <span className="text-sm text-[rgb(var(--color-text-muted))]">2026 Forecast</span>
+          </div>
+          <h1 className="text-4xl font-bold mb-2">Calculate Your Savings</h1>
+          <p className="text-lg text-[rgb(var(--color-text-muted))]">
+            Enter your financial information for 2026. We'll calculate exactly what you'll owe – and what you'll save.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Input Form */}
           <div className="glass-panel reveal" data-reveal>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="eyebrow">2026 Forecast</span>
-              <span className="text-sm text-[rgb(var(--color-text-muted))]">98% accuracy</span>
-            </div>
-            <h2 className="text-3xl font-bold mb-2">Calculate Your Savings</h2>
-            <p className="text-[rgb(var(--color-text-muted))] mb-6">
-              Enter your financial information for 2026. We'll calculate exactly what you'll owe – and what you'll save.
-            </p>
-
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold mb-2 text-[rgb(var(--color-text))]">
@@ -195,6 +207,6 @@ export default function ProjectionsPage() {
           )}
         </div>
       </div>
-    </main>
+    </>
   );
 }
