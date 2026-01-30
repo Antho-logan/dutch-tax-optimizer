@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ParticleField from "@/components/ParticleField";
-import ScrollEffects from "@/components/ScrollEffects";
-import Link from "next/link";
+import PageHeader from "@/components/PageHeader";
 
 const questions = [
   { id: "innovative", text: "Developing new products, services, or processes?", desc: "WBSO supports technical R&D with innovative character" },
@@ -33,41 +31,14 @@ export default function WbsoCheckerPage() {
   const result = showResult ? calculateEligibility() : null;
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/10 to-teal-50/10">
-      <ScrollEffects />
+    <main className="relative min-h-screen">
+      <PageHeader title="WBSO Checker" subtitle="R&D Tax Credit" />
 
-      {/* Hero */}
-      <section className="relative pt-20 pb-12">
-        <div className="hero-gradient parallax-layer" data-parallax data-speed="0.12" />
-        <div className="absolute inset-0">
-          <ParticleField count={20} />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex items-center gap-3 mb-4 reveal" data-reveal>
-            <Link href="/dashboard" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
-              ← Back to Dashboard
-            </Link>
-          </div>
-          <div className="max-w-3xl reveal" data-reveal data-delay="0.1s">
-            <span className="eyebrow">Dutch R&D Tax Credit</span>
-            <h1 className="section-title mt-4 mb-4">
-              Check Your WBSO Eligibility
-            </h1>
-            <p className="text-xl text-[rgb(var(--color-text-muted))] leading-relaxed">
-              The WBSO (Wet Bevordering Speur- en Ontwikkelingswerk) is a Dutch tax credit for R&D activities.
-              In 2026, you can get up to <span className="font-bold text-[rgb(var(--color-accent))]">€18,828</span> in tax benefits.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Questionnaire */}
-      <div className="container mx-auto px-6 pb-12 max-w-3xl">
+      <div className="relative z-10 container mx-auto px-6 py-12 max-w-3xl">
         <div className="glass-panel mb-8 reveal" data-reveal>
           <h2 className="text-2xl font-bold mb-6">Eligibility Questionnaire</h2>
           <p className="text-[rgb(var(--color-text-muted))] mb-8">
-            Answer these questions to check if your R&D work qualifies for WBSO benefits.
+            Answer these questions to check if your R&D work qualifies for WBSO benefits (up to €18,828).
           </p>
 
           <div className="space-y-4">
@@ -119,7 +90,6 @@ export default function WbsoCheckerPage() {
 
           <div className="flex justify-center mt-8">
             <button
-              size="lg"
               disabled={!allAnswered}
               onClick={() => setShowResult(true)}
               className={`px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-[0.2em] transition-all duration-300 ${

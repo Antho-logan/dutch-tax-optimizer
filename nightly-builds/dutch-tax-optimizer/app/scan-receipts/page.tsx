@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import ParticleField from "@/components/ParticleField";
-import ScrollEffects from "@/components/ScrollEffects";
+import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 
 export default function ScanReceiptsPage() {
@@ -52,25 +51,10 @@ export default function ScanReceiptsPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-br from-slate-50 via-orange-50/10 to-purple-50/10">
-      <ScrollEffects />
+    <main className="relative min-h-screen">
+      <PageHeader title="Receipt Scanner" subtitle="AI-Powered" />
 
-      {/* Header */}
-      <header className="border-b border-[rgb(var(--color-line))]/50 bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/dashboard" className="text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-primary))] transition-colors">
-              ← Back to Dashboard
-            </Link>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
-              Receipt Scanner
-            </h1>
-            <div className="w-20" /> {/* Spacer for balance */}
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
+      <div className="relative z-10 container mx-auto px-6 py-12 max-w-4xl">
         {/* Upload Card */}
         <div className="glass-panel mb-8 reveal" data-reveal>
           <div className="flex items-center gap-3 mb-6">
