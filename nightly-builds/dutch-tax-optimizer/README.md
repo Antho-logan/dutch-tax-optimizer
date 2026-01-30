@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🇳🇱 Dutch Tax Optimizer
 
-## Getting Started
+AI-powered tax optimization tool for Dutch freelancers. Maximize your deductions, check WBSO eligibility, and project your tax savings.
 
-First, run the development server:
+## ✨ Features
+
+- **📄 Receipt Scanner** - Upload receipts and let AI extract expense data automatically
+- **🔍 Deductions Finder** - Discover all eligible Dutch tax deductions for freelancers
+- **💼 WBSO Checker** - Check your 2026 WBSO (R&D tax credit) eligibility
+- **📊 Tax Projections** - Calculate your potential tax savings and plan ahead
+
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** Next.js 15 with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 + Custom CSS Variables
+- **Design:** Custom components (no generic UI libraries!)
+- **State:** React hooks
 
-## Learn More
+## 🎨 Design Philosophy
 
-To learn more about Next.js, take a look at the following resources:
+**Premium Custom Design:**
+- Unique color scheme (orange/red/purple gradients)
+- Smooth animations and micro-interactions
+- Bespoke layouts with visual personality
+- Mobile-first responsive design
+- High-end, non-generic look
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**No Template Feel:**
+- All components built from scratch with Tailwind
+- Custom CSS variables for design system
+- Unique visual identity
+- Intentional Minimalism applied
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📋 Features in Detail
 
-## Deploy on Vercel
+### Receipt Scanner
+- Drag-and-drop receipt upload
+- AI-powered data extraction
+- Automatic categorization
+- Tax deductible detection
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deductions Finder
+- Searchable deduction database
+- Category filtering
+- Popularity indicators
+- Detailed descriptions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### WBSO Checker
+- Interactive questionnaire
+- Instant eligibility assessment
+- Personalized recommendations
+- Application guidance
+
+### Tax Projections
+- Income tax calculator
+- Deduction optimizer
+- WBSO benefit integration
+- Effective tax rate analysis
+
+## 🇳🇱 Dutch Tax Context
+
+Built specifically for Dutch freelancers (ZZP'ers):
+- Box 1 income tax rates (2026)
+- WBSO R&D tax credit support
+- Common freelancer deductions
+- Dutch tax authority guidelines
+
+## 📦 Project Structure
+
+```
+dutch-tax-optimizer/
+├── app/
+│   ├── page.tsx              # Home page
+│   ├── scan-receipts/        # Receipt scanner
+│   ├── deductions/           # Deductions finder
+│   ├── wbso-checker/         # WBSO eligibility checker
+│   └── projections/          # Tax projections
+├── components/               # Custom Tailwind components
+│   ├── Button.tsx
+│   ├── Card.tsx
+│   ├── Input.tsx
+│   ├── Textarea.tsx
+│   └── Badge.tsx
+└── public/                   # Static assets
+```
+
+## 🎯 Why Custom Design?
+
+Generic UI libraries (Shadcn, Bootstrap) make everything look the same. This project uses **custom Tailwind components** for:
+- ✅ Unique visual identity
+- ✅ Premium feel and polish
+- ✅ Better brand differentiation
+- ✅ More control over UX
+- ✅ No template fatigue
+
+## 📄 License
+
+MIT License - feel free to use for your own tax optimization needs!
+
+## 🙏 Disclaimer
+
+This tool provides estimates and general guidance. For complex tax situations, always consult a qualified Dutch tax advisor.
+
+## 🔗 Resources
+
+- [Dutch Tax Authority (Belastingdienst)](https://belastingdienst.nl)
+- [WBSO Information (RVO.nl)](https://rvo.nl/subsidies-regelingen/wbso)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com)
+
+---
+
+Made with ❤️ for Dutch freelancers | Custom design with Next.js 15 + Tailwind CSS
