@@ -4,12 +4,93 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const iconClass = "w-5 h-5";
+
 const navItems = [
-  { href: "/dashboard", icon: "📊", label: "Dashboard", badge: null },
-  { href: "/scan-receipts", icon: "📸", label: "Scan Receipts", badge: "3" },
-  { href: "/deductions", icon: "🔍", label: "Deductions", badge: "89" },
-  { href: "/wbso-checker", icon: "🚀", label: "WBSO Checker", badge: null },
-  { href: "/projections", icon: "📈", label: "Tax Projections", badge: null },
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    badge: null,
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/history",
+    label: "History & Reports",
+    badge: "12",
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+        <path d="M14 3v5h5" />
+        <path d="M9 13h6M9 17h6" />
+      </svg>
+    ),
+  },
+  {
+    href: "/profile",
+    label: "Profile",
+    badge: null,
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="3.5" />
+        <path d="M4 20c1.6-3.5 4.6-5.5 8-5.5s6.4 2 8 5.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/scan-receipts",
+    label: "Scan Receipts",
+    badge: "3",
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 7h4l2-2h4l2 2h4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    ),
+  },
+  {
+    href: "/deductions",
+    label: "Deductions",
+    badge: "89",
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12V7a2 2 0 0 1 2-2h5l9 9-7 7-9-9z" />
+        <circle cx="7" cy="7" r="1.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/wbso-checker",
+    label: "WBSO Checker",
+    badge: null,
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/projections",
+    label: "Tax Projections",
+    badge: null,
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19h16" />
+        <path d="M6 15l4-4 3 3 5-6" />
+        <circle cx="6" cy="15" r="1" />
+        <circle cx="10" cy="11" r="1" />
+        <circle cx="13" cy="14" r="1" />
+        <circle cx="18" cy="8" r="1" />
+      </svg>
+    ),
+  },
 ];
 
 const savingsData = [6500, 7200, 7800, 8100, 8347, 8547];
@@ -55,7 +136,9 @@ export default function Sidebar() {
         <div className="h-16 border-b border-[rgb(var(--color-line))]/50 flex items-center justify-between px-4">
           {!collapsed && (
             <div className="flex items-center gap-3">
-              <div className="text-2xl">🇳🇱</div>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] text-white text-xs font-bold flex items-center justify-center">
+                NL
+              </div>
               <div>
                 <div className="font-bold text-sm bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent">
                   Dutch Tax
@@ -92,7 +175,7 @@ export default function Sidebar() {
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-[rgb(var(--bg-soft))] rounded-lg p-3 text-center">
-                  <div className="text-lg font-bold text-[rgb(var(--color-accent))]">€8.5K</div>
+                  <div className="text-lg font-bold text-[rgb(var(--color-accent))]">EUR 8.5K</div>
                   <div className="text-xs text-[rgb(var(--color-text-muted))]">Saved this year</div>
                 </div>
                 <div className="bg-[rgb(var(--bg-soft))] rounded-lg p-3 text-center">
@@ -119,7 +202,7 @@ export default function Sidebar() {
                     ${collapsed ? "justify-center" : ""}
                   `}
                 >
-                  <span className="text-xl flex-shrink-0">{item.icon}</span>
+                  <span className="flex-shrink-0">{item.icon}</span>
                   {!collapsed && (
                     <>
                       <span className="flex-1">{item.label}</span>
@@ -182,7 +265,12 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="card p-4 reveal" data-reveal>
               <div className="flex items-center gap-3">
-                <div className="text-3xl">⏰</div>
+                <div className="w-12 h-12 rounded-2xl bg-[rgb(var(--color-primary))]/10 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[rgb(var(--color-primary))]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 2" />
+                  </svg>
+                </div>
                 <div className="flex-1">
                   <div className="text-sm text-[rgb(var(--color-text-muted))]">Tax deadline in</div>
                   <div className="text-2xl font-bold text-[rgb(var(--color-primary))]">
@@ -212,12 +300,16 @@ export default function Sidebar() {
                 ${collapsed ? "justify-center" : ""}
               `}
             >
-              <span className="text-xl">➕</span>
+              <span className="w-9 h-9 rounded-full bg-[rgb(var(--color-primary))]/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-[rgb(var(--color-primary))]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
               {!collapsed && <span className="text-sm font-semibold">Upload Receipt</span>}
             </button>
 
             <Link
-              href="/settings"
+              href="/profile"
               className={`
                 w-full flex items-center gap-3 px-4 py-3 rounded-xl
                 text-[rgb(var(--color-text-muted))] hover:bg-[rgb(var(--color-bg-soft))] hover:text-[rgb(var(--color-text))]
@@ -225,8 +317,15 @@ export default function Sidebar() {
                 ${collapsed ? "justify-center" : ""}
               `}
             >
-              <span className="text-xl">⚙️</span>
-              {!collapsed && <span className="text-sm font-semibold">Settings</span>}
+              <span className="w-9 h-9 rounded-full bg-[rgb(var(--color-primary))]/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-[rgb(var(--color-primary))]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                  <circle cx="9" cy="6" r="1.5" />
+                  <circle cx="15" cy="12" r="1.5" />
+                  <circle cx="7" cy="18" r="1.5" />
+                </svg>
+              </span>
+              {!collapsed && <span className="text-sm font-semibold">Profile & Settings</span>}
             </Link>
           </div>
         </div>
