@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+:root {
+  /* Dutch Tax Premium Color Scheme */
+  --bg: #f8fafc;
+  --bg-elev: #ffffff;
+  --bg-soft: #f1f5f9;
+  --primary: #ea5932;
+  --primary-light: #fb923c;
+  --primary-dark: #c2410c;
+  --secondary: #8e61e2;
+  --accent: #10b981;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --line: rgba(234, 89, 50, 0.2);
+  --glow: rgba(234, 89, 50, 0.3);
+}
+
+.dark {
+  --bg: #0f172a;
+  --bg-elev: #1e293b;
+  --bg-soft: #334155;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --line: rgba(234, 89, 50, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  background: radial-gradient(circle at 20% 20%, rgba(234, 89, 50, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(142, 97, 226, 0.06), transparent 45%),
+    var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+::selection {
+  background: rgba(234, 89, 50, 0.3);
+  color: var(--text);
+}
+
+.section {
+  position: relative;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-title {
+    font-size: 3rem;
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 9999px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.3s;
+  background: linear-gradient(120deg, rgba(234, 89, 50, 0.95), rgba(142, 97, 226, 0.95));
+  color: white;
+  box-shadow: 0 12px 35px rgba(234, 89, 50, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(234, 89, 50, 0.5);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  transition: all 0.3s;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(234, 89, 50, 0.8);
+  color: var(--primary);
+  box-shadow: inset 0 0 0 1px rgba(234, 89, 50, 0.6);
+}
+
+.card {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid var(--line);
+  background-color: var(--bg-elev);
+  padding: 1.5rem;
+  transition: all 0.5s;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 2rem;
+  }
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(234, 89, 50, 0.6);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12), 0 0 40px rgba(234, 89, 50, 0.15);
+}
+
+.glass-panel {
+  border-radius: 1.5rem;
+  border: 1px solid var(--line);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1.5rem;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .glass-panel {
+    padding: 2rem;
+  }
+}
+
+.feature-card {
+  position: relative;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background-color: var(--bg-elev);
+  padding: 2rem;
+  transition: all 0.5s;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(234, 89, 50, 0.5);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1), 0 0 30px rgba(234, 89, 50, 0.2);
+}
+
+.input-field {
+  width: 100%;
+  border-radius: 9999px;
+  border: 2px solid var(--line);
+  background-color: white;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1rem;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.input-field:focus {
+  border-color: rgba(234, 89, 50, 0.8);
+  box-shadow: 0 0 0 4px rgba(234, 89, 50, 0.15);
+  outline: none;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scroll Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Hero Background Layers */
+.hero-gradient {
+  position: absolute;
+  inset: -30% 0 0 0;
+  background: radial-gradient(circle at 20% 20%, rgba(234, 89, 50, 0.2), transparent 60%),
+    radial-gradient(circle at 80% 10%, rgba(142, 97, 226, 0.15), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08), transparent 60%);
+  animation: gradient-shift 18s ease-in-out infinite;
+  will-change: background;
+}
+
+.hero-rings {
+  position: absolute;
+  inset: -20% 10% auto auto;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  border: 1px solid rgba(234, 89, 50, 0.2);
+  box-shadow: inset 0 0 80px rgba(234, 89, 50, 0.08), 0 0 60px rgba(234, 89, 50, 0.1);
+  animation: slow-rotate 40s linear infinite;
+  will-change: transform;
+}
+
+/* Floating Particles */
+.particle-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(234, 89, 50, 0.6), rgba(142, 97, 226, 0.6));
+  animation: float-particle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+  will-change: transform;
+  opacity: 0.7;
+}
+
+/* Parallax Layer */
+.parallax-layer {
+  will-change: transform;
+}
+
+/* Glow Line */
+.glow-line {
+  position: absolute;
+  inset: auto auto 0 0;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(234, 89, 50, 0), rgba(234, 89, 50, 0.8), rgba(234, 89, 50, 0));
+}
+
+/* Keyframe Animations */
+@keyframes float-particle {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -20px, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes slow-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
