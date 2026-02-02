@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import ParticleField from "@/components/ParticleField";
 import ScrollEffects from "@/components/ScrollEffects";
+import jsPDF from "jspdf";
 
 // Animated counter component
 function AnimatedCounter({ value, duration = 1000, prefix = "", suffix = "" }: { value: number; duration?: number; prefix?: string; suffix?: string }) {
@@ -49,10 +50,44 @@ function AnimatedCounter({ value, duration = 1000, prefix = "", suffix = "" }: {
   );
 }
 
+// 2025 tax constants
+const TAX_2025 = {
+  firstBracket: 0.3697,
+  secondBracket: 0.4950,
+  threshold: 75518,
+  zelfstandigenAftrek: 2470,
+};
+
+// 2026 tax constants
+const TAX_2026 = {
+  firstBracket: 0.3697,
+  secondBracket: 0.4950,
+  threshold: 75518,
+  zelfstandigenAftrek: 1200, // Reduced from €2,470
+};
+
 export default function ProjectionsPage() {
   const [formData, setFormData] = useState({ income: "", deductions: "", wbso: "", credits: "" });
   const [projection, setProjection] = useState<any>(null);
   const [hasCalculated, setHasCalculated] = useState(false);
+
+  const calculateTax = (income: number, deductions: number, wbso: number, credits: number, taxYear: "2025" | "2026") => {
+    const rates = taxYear === "2025" ? TAX_2025 : TAX_2026;
+    const taxableIncome = Math.max(0, income - deductions);
+    let incomeTax = 0;
+    if (taxableIncome > rates.threshold) {
+      incomeTax = rates.threshold * rates.firstBracket + (taxableIncome - rates.threshold) * rates.secondBracket;
+    } else {
+      incomeTax = taxableIncome * rates.firstBracket;
+    }
+    const totalSavings = deductions * rates.firstBracket + wbso + credits;
+    return {
+      incomeTax,
+      totalSavings,
+      netIncome: income - incomeTax + totalSavings,
+      effectiveRate: income > 0 ? ((incomeTax - totalSavings) / income) * 100 : 0,
+    };
+  };
 
   const calculate = () => {
     const income = parseFloat(formData.income) || 0;
@@ -61,36 +96,133 @@ export default function ProjectionsPage() {
     const credits = parseFloat(formData.credits) || 0;
 
     const taxableIncome = Math.max(0, income - deductions);
-    let incomeTax = 0;
     let taxBracket = "First Bracket (36.97%)";
     if (taxableIncome > 75518) {
-      incomeTax = 75518 * 0.3697 + (taxableIncome - 75518) * 0.4950;
       taxBracket = "Second Bracket (49.50%)";
-    } else {
-      incomeTax = taxableIncome * 0.3697;
     }
 
-    const totalSavings = deductions * 0.3697 + wbso + credits;
-    const effectiveRate = income > 0 ? ((incomeTax - totalSavings) / income) * 100 : 0;
-    const originalTax = income > 0 ? (incomeTax / income) * 100 : 0;
+    // Calculate 2026 (current year)
+    const projection2026 = calculateTax(income, deductions, wbso, credits, "2026");
+    
+    // Calculate 2025 for comparison
+    const projection2025 = calculateTax(income, deductions, wbso, credits, "2025");
+
+    const taxIncrease = projection2026.incomeTax - projection2025.incomeTax;
+    const originalTax = income > 0 ? (projection2026.incomeTax / income) * 100 : 0;
 
     setProjection({
       grossIncome: income,
       totalDeductions: deductions,
       taxableIncome,
-      incomeTax,
+      incomeTax: projection2026.incomeTax,
       wbsoBenefit: wbso,
       otherCredits: credits,
-      totalSavings,
-      effectiveTaxRate: effectiveRate,
+      totalSavings: projection2026.totalSavings,
+      effectiveTaxRate: projection2026.effectiveRate,
       originalTaxRate: originalTax,
       taxBracket,
-      netIncome: income - incomeTax + totalSavings,
+      netIncome: projection2026.netIncome,
+      // Multi-year comparison
+      comparison: {
+        income2025: projection2025.incomeTax,
+        income2026: projection2026.incomeTax,
+        net2025: projection2025.netIncome,
+        net2026: projection2026.netIncome,
+        taxIncrease,
+        percentageIncrease: income > 0 ? ((taxIncrease / projection2025.incomeTax) * 100) : 0,
+      },
     });
     setHasCalculated(true);
   };
 
   const format = (amount: number) => new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(amount);
+
+  const exportToPDF = () => {
+    if (!projection) return;
+    
+    const doc = new jsPDF();
+    let y = 20;
+    
+    // Title
+    doc.setFontSize(20);
+    doc.setFont("helvetica", "bold");
+    doc.text("Tax Summary - 2026", 20, y);
+    y += 15;
+    
+    // Date
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Generated: ${new Date().toLocaleDateString("nl-NL")}`, 20, y);
+    y += 15;
+    
+    // Income Section
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Income Overview", 20, y);
+    y += 10;
+    
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Gross Income: ${format(projection.grossIncome)}`, 25, y); y += 7;
+    doc.text(`Total Deductions: ${format(projection.totalDeductions)}`, 25, y); y += 7;
+    doc.text(`Taxable Income: ${format(projection.taxableIncome)}`, 25, y); y += 12;
+    
+    // Tax Calculation
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Tax Calculation (2026)", 20, y);
+    y += 10;
+    
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Income Tax: ${format(projection.incomeTax)}`, 25, y); y += 7;
+    doc.text(`WBSO Benefit: ${format(projection.wbsoBenefit)}`, 25, y); y += 7;
+    doc.text(`Other Credits: ${format(projection.otherCredits)}`, 25, y); y += 7;
+    doc.text(`Total Savings: ${format(projection.totalSavings)}`, 25, y); y += 12;
+    
+    // Final Result
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Net Income", 20, y);
+    y += 10;
+    
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(16, 185, 129);
+    doc.text(format(projection.netIncome), 25, y);
+    y += 15;
+    doc.setTextColor(0, 0, 0);
+    
+    // Tax Bracket
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Tax Bracket: ${projection.taxBracket}`, 25, y); y += 7;
+    doc.text(`Effective Tax Rate: ${projection.effectiveTaxRate.toFixed(1)}%`, 25, y); y += 12;
+    
+    // Comparison (2025 vs 2026)
+    if (projection.comparison) {
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("2025 vs 2026 Comparison", 20, y);
+      y += 10;
+      
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal");
+      doc.text(`2025 Income Tax: ${format(projection.comparison.income2025)}`, 25, y); y += 7;
+      doc.text(`2026 Income Tax: ${format(projection.comparison.income2026)}`, 25, y); y += 7;
+      doc.text(`Tax Increase: ${format(projection.comparison.taxIncrease)} (+${projection.comparison.percentageIncrease.toFixed(1)}%)`, 25, y); y += 12;
+    }
+    
+    // Disclaimer
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "italic");
+    doc.setTextColor(100, 100, 100);
+    doc.text("Disclaimer: This is an estimate. Consult a tax advisor for official advice.", 20, 280);
+    doc.text("Dutch Tax Form References: Box 1 Income Tax, Zelfstandigenaftrek", 20, 285);
+    
+    // Save
+    doc.save("tax-summary-2026.pdf");
+  };
 
   return (
     <>
@@ -202,6 +334,18 @@ export default function ProjectionsPage() {
                   </svg>
                 </span>
               </button>
+
+              {hasCalculated && projection && (
+                <button
+                  onClick={exportToPDF}
+                  className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-[rgb(var(--color-primary))] text-[rgb(var(--color-primary))] font-semibold transition-all duration-300 hover:bg-[rgb(var(--color-primary))]/10 flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Export for Accountant
+                </button>
+              )}
             </div>
           </div>
 
@@ -223,6 +367,52 @@ export default function ProjectionsPage() {
           {/* Results */}
           {hasCalculated && projection && (
             <div className="space-y-6">
+              {/* 2025 vs 2026 Comparison */}
+              {projection.comparison && (
+                <div className="card reveal" data-reveal style={{ borderColor: "rgba(239, 68, 68, 0.3)" }}>
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="eyebrow">Year-over-Year</span>
+                    <span className="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-400">Tax Increase Alert</span>
+                  </div>
+                  <h2 className="text-2xl font-bold mb-6">2025 vs 2026 Comparison</h2>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="p-4 bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl border border-gray-600/30">
+                      <div className="text-sm text-[rgb(var(--color-text-muted))] mb-1">2025 Net Income</div>
+                      <div className="text-2xl font-bold">
+                        <AnimatedCounter value={projection.comparison.net2025} prefix="€" />
+                      </div>
+                    </div>
+                    <div className="p-4 bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-xl border border-red-500/30">
+                      <div className="text-sm text-[rgb(var(--color-text-muted))] mb-1">2026 Net Income</div>
+                      <div className="text-2xl font-bold text-red-400">
+                        <AnimatedCounter value={projection.comparison.net2026} prefix="€" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-red-500/10 to-orange-500/10 rounded-xl border border-red-500/30">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-sm text-[rgb(var(--color-text-muted))] mb-1">You're paying</div>
+                        <div className="text-3xl font-bold text-red-400">
+                          <AnimatedCounter value={projection.comparison.taxIncrease} prefix="€" />
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm text-[rgb(var(--color-text-muted))] mb-1">more in taxes</div>
+                        <div className="text-xl font-bold text-red-400">
+                          +<AnimatedCounter value={projection.comparison.percentageIncrease} suffix="%" duration={800} />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-[rgb(var(--color-text-muted))] mt-3">
+                      ⚠️ Due to reduced zelfstandigenaftrek (€2,470 → €1,200)
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <div className="card reveal" data-reveal style={{ borderColor: "rgba(16, 185, 129, 0.3)" }}>
                 <div className="flex items-center gap-3 mb-6">
                   <span className="eyebrow">Tax Summary</span>

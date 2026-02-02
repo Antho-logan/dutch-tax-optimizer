@@ -21,6 +21,16 @@ const navItems = [
     ),
   },
   {
+    href: "/bv-vs-zzp",
+    label: "ZZP vs BV",
+    badge: "NEW",
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M9 21H4v-5" />
+      </svg>
+    ),
+  },
+  {
     href: "/history",
     label: "History & Reports",
     badge: "12",

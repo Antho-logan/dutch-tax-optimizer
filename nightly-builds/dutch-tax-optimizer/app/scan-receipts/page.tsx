@@ -5,6 +5,80 @@ import ParticleField from "@/components/ParticleField";
 import ScrollEffects from "@/components/ScrollEffects";
 import Link from "next/link";
 
+// Dutch store name to category mapping
+const STORE_CATEGORY_MAP: Record<string, string> = {
+  // Grocery stores
+  "ah": "Groceries",
+  "albert heijn": "Groceries",
+  "jumbo": "Groceries",
+  "picnic": "Groceries",
+  "ekoplaza": "Groceries",
+  "plus": "Groceries",
+  "coop": "Groceries",
+  "dirk": "Groceries",
+  "aldi": "Groceries",
+  "lidl": "Groceries",
+  
+  // Fuel & travel
+  "shell": "Business Travel / Fuel",
+  "bp": "Business Travel / Fuel",
+  "total": "Business Travel / Fuel",
+  "q8": "Business Travel / Fuel",
+  "esso": "Business Travel / Fuel",
+  "ns": "Business Travel",
+  "nederlandse spoorwegen": "Business Travel",
+  "transavia": "Business Travel",
+  "klm": "Business Travel",
+  "euronight": "Business Travel",
+  
+  // Coffee & food
+  "starbucks": "Food & Business Meals",
+  "coffee": "Food & Business Meals",
+  "bagels": "Food & Business Meals",
+  "bakker": "Food & Business Meals",
+  
+  // Electronics & equipment
+  "bol.com": "Equipment & Supplies",
+  "coolblue": "Equipment & Supplies",
+  "mediamarkt": "Equipment & Supplies",
+  "apple": "Equipment & Supplies",
+  "alternate": "Equipment & Supplies",
+  "azerty": "Equipment & Supplies",
+  
+  // Telecom
+  "kpn": "Telecommunications",
+  "vodafone": "Telecommunications",
+  "t-mobile": "Telecommunications",
+  "odido": "Telecommunications",
+  "tele2": "Telecommunications",
+  
+  // Workspace & office
+  "wework": "Workspace Rental",
+  "spaces": "Workspace Rental",
+  "tribe": "Workspace Rental",
+  "staples": "Office Supplies",
+  "vivo": "Office Supplies",
+  " ikea": "Office Furniture & Equipment",
+  
+  // Software & subscriptions
+  "adobe": "Software & Subscriptions",
+  "microsoft": "Software & Subscriptions",
+  "google": "Software & Subscriptions",
+  "slack": "Software & Subscriptions",
+  "notion": "Software & Subscriptions",
+  "figma": "Software & Subscriptions",
+};
+
+const suggestCategory = (text: string): string | null => {
+  const lowerText = text.toLowerCase();
+  for (const [store, category] of Object.entries(STORE_CATEGORY_MAP)) {
+    if (lowerText.includes(store)) {
+      return category;
+    }
+  }
+  return null;
+};
+
 export default function ScanReceiptsPage() {
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -39,14 +113,24 @@ export default function ScanReceiptsPage() {
 
   const processReceipts = async () => {
     setIsProcessing(true);
+    
+    // Simulate AI processing with smart category detection
     await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Simulate OCR text extraction (in real app, this would come from AI vision API)
+    const mockOCRText = files.length > 0 ? files[0].name.toLowerCase() : "staples amsterdam receipt";
+    
+    // Use AI category suggestion
+    const suggestedCategory = suggestCategory(mockOCRText) || "General Business Expense";
+    
     setExtractedData({
       date: "2026-01-28",
       amount: "€47.50",
-      category: "Office Supplies",
+      category: suggestedCategory,
       vendor: "Staples Amsterdam",
       deductible: true,
       confidence: 94,
+      aiSuggested: true,
     });
     setIsProcessing(false);
   };
@@ -149,7 +233,12 @@ export default function ScanReceiptsPage() {
                 <p className="text-3xl font-bold text-[rgb(var(--color-accent))]">{extractedData.amount}</p>
               </div>
               <div>
-                <p className="text-sm text-[rgb(var(--color-text-muted))]">Category</p>
+                <p className="text-sm text-[rgb(var(--color-text-muted))] flex items-center gap-2">
+                  Category
+                  {extractedData.aiSuggested && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--color-primary))]/20 text-[rgb(var(--color-primary))]">AI Suggested</span>
+                  )}
+                </p>
                 <p className="text-xl font-bold">{extractedData.category}</p>
               </div>
               <div>

@@ -34,12 +34,20 @@ Build a modern, minimalist landing page for: $project
 Tech Stack:
 - Next.js 15 + TypeScript
 - Tailwind CSS v4
-- Shadcn UI components
+- Custom CSS variables for unique design
+
+Design Approach:
+- Build CUSTOM components with Tailwind (not generic Shadcn!)
+- Unique visual identity with custom colors
+- Bespoke layouts (asymmetry, interesting grids)
+- Smooth animations and micro-interactions
+- High-end, premium feel
 
 Design Principles:
 - Intentional Minimalism (anti-generic, bespoke layouts)
-- Hero section with strong CTA
+- Hero section with strong visual impact
 - 3-4 feature sections max
+- Custom color scheme (no default blue/violet)
 - Clean typography, lots of whitespace
 - Mobile-first responsive
 
@@ -51,11 +59,12 @@ Structure:
 5. Footer: Minimal links
 
 Requirements:
-- Use existing Shadcn components (Button, Card, etc.)
-- No custom component building from scratch
+- Build ALL visual components from scratch with Tailwind
+- Custom CSS variables for colors, spacing
+- NO Shadcn unless for complex forms/modals
 - Clean, semantic HTML5
-- Professional color scheme
-- Smooth animations (framer-motion)
+- Smooth scroll animations
+- Professional, unique design
 
 Output: Complete working app in one shot
 EOF
@@ -67,7 +76,12 @@ template_minimal() {
     cat <<EOF
 Build minimal MVP for: $project
 
-Tech: Next.js + Tailwind + Shadcn UI
+Tech: Next.js + Tailwind CSS
+
+Design:
+- Build custom UI with Tailwind (no generic libraries)
+- Simple, clean, unique look
+- Custom colors and spacing
 
 Core Features Only:
 - Single page app
@@ -88,15 +102,19 @@ Build admin dashboard for: $project
 Tech Stack:
 - Next.js 15 + TypeScript
 - Tailwind CSS v4
-- Shadcn UI
 - Recharts for charts
+
+Design:
+- Custom Tailwind components (no generic Shadcn)
+- Clean, data-focused layout
+- Good contrast and readability
 
 Pages:
 - Overview with key metrics
 - Data table with filters
 - Settings page
 
-Design: Clean, data-focused, good contrast
+Design: Clean, professional, unique
 EOF
 }
 
@@ -109,9 +127,13 @@ Build full-stack web app: $project
 Tech Stack:
 - Next.js 15 + TypeScript
 - Tailwind CSS v4
-- Shadcn UI
 - API routes
-- Data fetching with React Query
+- Data fetching
+
+Design:
+- Build custom UI with Tailwind (unique look)
+- Use Shadcn/Radix ONLY for complex forms/dialogs
+- Focus on smooth, polished UX
 
 Features:
 - Authentication UI ready
@@ -119,7 +141,7 @@ Features:
 - Responsive tables
 - Form validation
 
-Design: Professional, clean, consistent
+Design: Professional, unique, not generic
 EOF
 }
 
@@ -134,6 +156,14 @@ Tech Stack:
 - Tailwind CSS v4
 - Shadcn UI
 - PWA ready
+
+CRITICAL: DO NOT BUILD CUSTOM COMPONENTS
+- All UI elements: Use Shadcn components
+- Inputs: <Input>, <Textarea>
+- Buttons: <Button>
+- Forms: <Form>
+- Navigation: <NavigationMenu>
+- Mobile touches: Use Shadcn mobile patterns
 
 Design:
 - Mobile breakpoints first

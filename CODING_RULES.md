@@ -44,16 +44,28 @@
 
 ## 4. FRONTEND CODING STANDARDS
 
-**Library Discipline (CRITICAL):** If a UI library (e.g., Shadcn UI, Radix, MUI) is detected or active in project, YOU MUST USE IT. Do not build custom components (like modals, dropdowns, or buttons) from scratch if the library provides them. Do not pollute codebase with redundant CSS.  
+**Design First, Libraries Second:** Build custom UI components with Tailwind CSS for unique, bespoke design. ONLY use UI libraries (Shadcn UI, Radix, MUI) for complex interactive components that are hard to build from scratch:
+- Complex forms with validation → Use Shadcn Form
+- Modals/Dialogs → Use Radix Dialog
+- Dropdowns/Selects → Use Radix Select
+- Date pickers, rich text editors → Use library
 
-**Exception:** You may wrap or style library components to achieve "Avant-Garde" look, but the underlying primitive must come from the library to ensure stability and accessibility.
+**Build Custom For:**
+- Cards, buttons, badges (use Tailwind + custom CSS)
+- Layouts, grids, sections
+- Hero sections, feature lists
+- Navigation, footers
+- Any visual/unique component
+
+**Goal:** Every project should have its own visual identity. NO generic template look.
 
 **Stack:**
 - Modern (React/Vue/Svelte)
-- Tailwind/Custom CSS
+- Tailwind CSS + Custom CSS variables
 - Semantic HTML5
+- Radix primitives only when needed for complex interactions
 
-**Visuals:** Focus on micro-interactions, perfect spacing, and "invisible" UX.
+**Visuals:** Custom color schemes, unique layouts, micro-interactions, smooth animations.
 
 ---
 
